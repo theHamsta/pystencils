@@ -15,7 +15,8 @@ def create_cuda_kernel(assignments,
                        iteration_slice=None,
                        ghost_layers=None,
                        skip_independence_check=False,
-                       use_textures_for_interpolation=True):
+                       use_textures_for_interpolation=True,
+                       do_unify_shape_symbols=True):
     assert assignments, "Assignments must not be empty!"
     fields_read, fields_written, assignments = add_types(assignments, type_info, not skip_independence_check)
     all_fields = fields_read.union(fields_written)
@@ -60,7 +61,8 @@ def create_cuda_kernel(assignments,
     block = Block(assignments)
 
     block = indexing.guard(block, common_shape)
-    unify_shape_symbols(block, common_shape=common_shape, fields=fields_without_buffers)
+    if do_unify_shape_symbols:
+        unify_shape_symbols(block, common_shape=common_shape, fields=fields_without_buffers)
 
     ast = KernelFunction(block,
                          'gpu',

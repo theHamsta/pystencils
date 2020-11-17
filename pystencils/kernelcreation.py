@@ -30,6 +30,7 @@ def create_kernel(assignments,
                   use_textures_for_interpolation=True,
                   cpu_prepend_optimizations=[],
                   use_auto_for_assignments=False,
+                  do_unify_shape_symbols=True,
                   opencl_queue=None,
                   opencl_ctx=None):
     """
@@ -119,7 +120,8 @@ def create_kernel(assignments,
                                  indexing_creator=indexing_creator_from_params(gpu_indexing, gpu_indexing_params),
                                  iteration_slice=iteration_slice, ghost_layers=ghost_layers,
                                  skip_independence_check=skip_independence_check,
-                                 use_textures_for_interpolation=use_textures_for_interpolation)
+                                 use_textures_for_interpolation=use_textures_for_interpolation,
+                                 do_unify_shape_symbols=do_unify_shape_symbols)
         if target == 'opencl':
             from pystencils.opencl.opencljit import make_python_function
             ast._backend = 'opencl'
